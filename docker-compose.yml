@@ -21,9 +21,6 @@ services:
   item-db:
     #melakukan pull image item-db dari docker hub
     image: mongo:3
-    #menggunakan port 27017 dari container item-db untuk diakses oleh host di port 27017
-    ports:
-      - 27017:27017
     #menggunakan volume app-db dengan target /data/db untuk menyimpan data
     volumes:
       - app-db:/data/db
