@@ -1,0 +1,35 @@
+#menggunakan compose versi 3
+version: "3.7"
+
+#menjalankan dua service item-app dan item-db
+services:
+  #menggunakan image item-app
+  item-app:
+    #melakukan pull image item-app dari docker hub
+    image: rhakagesa/item-app:v1
+    #menggunakan port 8080 dari container item-app untuk diakses oleh host di port 80
+    ports:
+      - 80:8080
+    #menunggu service item-db berjalan sebelum menjalankan container item-app
+    depends_on:
+      item-db:
+        condition: service_started
+    #menerapkan restart container ketika container item-app mati
+    restart: always
+
+  #menggunakan image item-db
+  item-db:
+    #melakukan pull image item-db dari docker hub
+    image: mongo:3
+    #menggunakan port 27017 dari container item-db untuk diakses oleh host di port 27017
+    ports:
+      - 27017:27017
+    #menggunakan volume app-db dengan target /data/db untuk menyimpan data
+    volumes:
+      - app-db:/data/db
+    #menerapkan restart container ketika container item-db mati
+    restart: always
+
+#membuat volume app-db
+volumes:
+  app-db:
